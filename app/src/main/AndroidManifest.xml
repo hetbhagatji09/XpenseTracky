@@ -32,6 +32,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PhoneSignupActivity"/>
+
+        <!-- Email sign-up activity -->
+        <activity android:name=".EmailSignupActivity"/>
+
+        <!-- Login activity -->
+
     </application>
 
 </manifest>
