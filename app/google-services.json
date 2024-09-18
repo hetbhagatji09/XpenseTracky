@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362672876646",
+    "project_id": "login-register-firebase-9cbbb",
+    "storage_bucket": "login-register-firebase-9cbbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362672876646:android:93a25bda32f60307aed1a7",
+        "android_client_info": {
+          "package_name": "com.example.expensetracky"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY-uNP4_bPWSZ_vlW8DvAKA1bK_B1oyFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
 
     private Button continueWithPhoneButton, continueWithEmailButton;
+    private Button login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the buttons
         continueWithPhoneButton = findViewById(R.id.continueWithPhone);
         continueWithEmailButton = findViewById(R.id.continueWithEmail);
+        login=findViewById(R.id.loginButton);
 
         // Set click listener for continue with phone number
         continueWithPhoneButton.setOnClickListener(new View.OnClickListener() {
@@ -38,5 +40,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(emailIntent);
             }
         });
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }
