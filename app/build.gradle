@@ -23,10 +23,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // Enabling View Binding
     buildFeatures {
         viewBinding true
     }
@@ -37,17 +40,23 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation 'com.google.firebase:firebase-auth:23.0.0'
+    // Firebase Authentication
     implementation libs.firebase.auth
+
+    // Android Navigation Components
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+
+    // LiveData and ViewModel for Lifecycle-aware components
     implementation libs.lifecycle.livedata.ktx
     implementation libs.lifecycle.viewmodel.ktx
-    implementation libs.navigation.fragment
-    implementation libs.navigation.ui
+
+    // Testing Libraries
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 }
 
-// Apply the Google Services plugin
+// Apply the Google Services plugin for Firebase
 apply plugin: 'com.google.gms.google-services'
