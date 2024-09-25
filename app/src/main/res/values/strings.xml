@@ -1,10 +1,31 @@
 <resources>
+    <!-- App Name -->
     <string name="app_name">ExpenseTracky</string>
+
+    <!-- Titles for Activities -->
     <string name="title_activity_navigation">Navigation</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_transactions">Transactions</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <!-- Placeholder Text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Categories String Array -->
+    <string-array name="categories">
+        <item>Food</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Entertainment</item>
+        <item>Utilities</item>
+    </string-array>
+
+    <!-- Accounts String Array -->
+    <string-array name="accounts">
+        <item>Cash</item>
+        <item>Credit Card</item>
+        <item>Bank</item>
+        <item>Mobile Wallet</item>
+    </string-array>
 </resources>
