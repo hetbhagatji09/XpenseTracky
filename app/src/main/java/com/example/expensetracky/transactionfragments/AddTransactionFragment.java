@@ -64,15 +64,61 @@ public class AddTransactionFragment extends DialogFragment {
             }
 
             String date = etDate.getText().toString();
-            Transaction transaction = new Transaction(date, amount, category, account, notes);
 
-            // Put the transaction data in a Bundle and set it as a result
-            Bundle result = new Bundle();
-            result.putParcelable("transaction", transaction);
-            getParentFragmentManager().setFragmentResult("transactionKey", result);
+            // Calculate day of the week and day number
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK); // Sunday = 1, Saturday = 7
+            int dayNumber = calendar.get(Calendar.DAY_OF_MONTH); // Day of the month
 
-            // Close the dialog
-            dismiss();
+            String dayOfWeekString = "";
+            switch (dayOfWeek) {
+                case Calendar.SUNDAY:
+                    dayOfWeekString = "Sunday";
+                    break;
+                case Calendar.MONDAY:
+                    dayOfWeekString = "Monday";
+                    break;
+                case Calendar.TUESDAY:
+                    dayOfWeekString = "Tuesday";
+                    break;
+                case Calendar.WEDNESDAY:
+                    dayOfWeekString = "Wednesday";
+                    break;
+                case Calendar.THURSDAY:
+                    dayOfWeekString = "Thursday";
+                    break;
+                case Calendar.FRIDAY:
+                    dayOfWeekString = "Friday";
+                    break;
+                case Calendar.SATURDAY:
+                    dayOfWeekString = "Saturday";
+                    break;
+            }
+
+            // Create the Transaction object
+            Transaction transaction = new Transaction(date, amount, category, account, notes, dayOfWeekString);
+
+            // Check if user is authenticated
+            if (currentUser != null) {
+                String userId = currentUser.getUid();
+
+                // Save the transaction to Firestore under the user's transactions sub-collection
+                db.collection("users").document(userId)
+                        .collection("transactions")
+                        .add(transaction) // Firestore auto-generates a document ID
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(getContext(), "Transaction added successfully", Toast.LENGTH_SHORT).show();
+                            // Put the transaction data in a Bundle and set it as a result
+                            Bundle result = new Bundle();
+                            result.putParcelable("transaction", transaction);
+                            getParentFragmentManager().setFragmentResult("transactionKey", result);
+                            dismiss(); // Close the dialog
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), "Error adding transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            }
         });
 
         return view;

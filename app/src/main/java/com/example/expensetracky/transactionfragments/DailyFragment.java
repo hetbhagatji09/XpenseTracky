@@ -105,10 +105,12 @@ public class DailyFragment extends Fragment implements AddTransactionFragment.On
                                     String category = document.getString("category");
                                     String date = document.getString("date");
                                     String notes = document.getString("notes");
+                                    String dayOfWeekString = document.getString("dayOfWeek");
+
 
                                     // Create and add Transaction object only if amount is valid
                                     if (amount != null) {
-                                        Transaction transaction = new Transaction(account, amount, category, date, notes);
+                                        Transaction transaction = new Transaction(date, amount, category, account, notes ,dayOfWeekString);
                                         transactionsList.add(transaction);
                                     } else {
                                         // Handle invalid or missing amount field if necessary
@@ -134,7 +136,7 @@ public class DailyFragment extends Fragment implements AddTransactionFragment.On
     @Override
     public void onTransactionAdded(Transaction transaction) {
         transactionsList.add(transaction);
-        addTransactionToFirestore(transaction); // Call method to add transaction to Firestore
+         // Call method to add transaction to Firestore
 
         // Notify the adapter about the change
         adapter.notifyItemInserted(transactionsList.size() - 1);

@@ -45,7 +45,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         // Safely handle null for the amount
         if (transaction.getAmount() != null) {
-            holder.expenseAmount.setText("$ " + Double.toString(transaction.getAmount()));
+            holder.expenseAmount.setText(  Double.toString(transaction.getAmount()));
         } else {
             holder.expenseAmount.setText("$ 0.00");
         }

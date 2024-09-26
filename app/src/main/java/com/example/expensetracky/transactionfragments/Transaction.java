@@ -12,34 +12,40 @@ import java.util.Locale;
 
 public class Transaction implements Parcelable {
     private String date;  // Assuming the date is stored in a "yyyy-MM-dd" format
-    private Double amount;
+    private double amount;
     private String category;
     private String account;
     private String notes;
+    private String dayOfWeek;
+
 
     // Required empty constructor for Firebase
     public Transaction() {
         // No-arg constructor is needed
     }
 
-    public Transaction(String date, Double amount, String category, String account, String notes) {
+    public Transaction(String date, Double amount, String category, String account, String notes,String dayOfWeek) {
         this.date = date;
         this.amount = amount;
         this.category = category;
         this.account = account;
         this.notes = notes;
+
+        this.dayOfWeek=dayOfWeek;
     }
 
     protected Transaction(Parcel in) {
         date = in.readString();
         if (in.readByte() == 0) {
-            amount = null;
+            amount = 0;
         } else {
             amount = in.readDouble();
         }
         category = in.readString();
         account = in.readString();
         notes = in.readString();
+
+        dayOfWeek = in.readString();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
@@ -91,6 +97,8 @@ public class Transaction implements Parcelable {
         return notes;
     }
 
+
+
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -110,6 +118,7 @@ public class Transaction implements Parcelable {
         // Get the full date in a readable format (e.g., "18 September 2024")
         return formatDateField("dd MMMM yyyy");
     }
+    public void setDayOfWeek(String dayOfWeek) { this.dayOfWeek = dayOfWeek; }
 
     private String formatDateField(String format) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -131,7 +140,7 @@ public class Transaction implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int flags) {
         parcel.writeString(date);
-        if (amount == null) {
+        if (amount == 0) {
             parcel.writeByte((byte) 0);  // Indicate null amount
         } else {
             parcel.writeByte((byte) 1);  // Indicate non-null amount
@@ -140,5 +149,6 @@ public class Transaction implements Parcelable {
         parcel.writeString(category);
         parcel.writeString(account);
         parcel.writeString(notes);
+        parcel.writeString(dayOfWeek);
     }
 }
