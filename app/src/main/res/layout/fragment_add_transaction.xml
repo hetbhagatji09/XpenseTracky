@@ -27,7 +27,9 @@
             android:hint="Enter Date"
             app:layout_constraintTop_toBottomOf="@id/tv_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:focusable="false"
+        android:clickable="true" />
 
         <!-- Amount field -->
         <TextView

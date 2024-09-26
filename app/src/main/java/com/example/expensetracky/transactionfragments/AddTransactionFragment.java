@@ -16,48 +16,59 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.expensetracky.R;
-
-import java.util.Calendar;
-
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Calendar;
 
 public class AddTransactionFragment extends DialogFragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private EditText etDate, etAmount, etNotes;
-    private Spinner etCategory, etAccount; // Use EditText for category and account
+    private Spinner etCategory, etAccount; // Ensure both Spinners are declared
     private Button btnSave;
     private OnTransactionAddedListener listener;
 
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_transaction, container, false);
 
+        etDate = view.findViewById(R.id.et_date);
         etAmount = view.findViewById(R.id.et_amount);
         etCategory = view.findViewById(R.id.spinner_category);
+        etAccount = view.findViewById(R.id.spinner_account); // Initialize the account Spinner
         etNotes = view.findViewById(R.id.et_notes);
         btnSave = view.findViewById(R.id.btn_save);
 
-        btnSave.setOnClickListener(v -> {
-            String amount = etAmount.getText().toString().trim();
-            String category = etCategory.getSelectedItem().toString().trim();
-            String notes = etNotes.getText().toString().trim();
+        // Set a click listener on the date EditText to open the date picker
+        etDate.setOnClickListener(v -> showDatePickerDialog());
 
-            if (amount.isEmpty() || category.isEmpty()) {
-                Toast.makeText(getContext(), "Amount and category are required", Toast.LENGTH_SHORT).show();
-                return;
+        btnSave.setOnClickListener(v -> {
+            Double amount;
+            try {
+                amount = Double.valueOf(etAmount.getText().toString());
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Invalid amount", Toast.LENGTH_SHORT).show();
+                return; // Exit early if validation fails
             }
 
-            Transaction transaction = new Transaction("today", amount, category, "defaultAccount", notes);
+            String category = etCategory.getSelectedItem() != null ? etCategory.getSelectedItem().toString().trim() : "";
+            String notes = etNotes.getText().toString().trim();
+            String account = etAccount.getSelectedItem() != null ? etAccount.getSelectedItem().toString().trim() : "";
+
+            if (category.isEmpty()) {
+                Toast.makeText(getContext(), "Category is required", Toast.LENGTH_SHORT).show();
+                return; // Exit early if validation fails
+            }
+
+            String date = etDate.getText().toString();
+            Transaction transaction = new Transaction(date, amount, category, account, notes);
 
             // Put the transaction data in a Bundle and set it as a result
             Bundle result = new Bundle();
             result.putParcelable("transaction", transaction);
-
             getParentFragmentManager().setFragmentResult("transactionKey", result);
 
             // Close the dialog
@@ -67,63 +78,25 @@ public class AddTransactionFragment extends DialogFragment {
         return view;
     }
 
-
-
     private void showDatePickerDialog() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
-                    etDate.setText(date); // Set the date in the EditText
-                }, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getActivity(),
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    // Handle the selected date here
+                    String selectedDate = year1 + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                    etDate.setText(selectedDate); // Set the date into the EditText
+                },
+                year, month, day
+        );
+
+        // Show the dialog
         datePickerDialog.show();
     }
-
-    private void saveTransaction() {
-        String date = etDate.getText().toString();
-        String amount = etAmount.getText().toString();
-        String category = etCategory.getSelectedItem().toString();
-        String account = etAccount.getSelectedItem().toString();
-        String notes = etNotes.getText().toString();
-
-        // Validate inputs
-        if (date.isEmpty() || amount.isEmpty() || category.isEmpty() || account.isEmpty()) {
-            if (date.isEmpty()) etDate.setError("Date is required");
-            if (amount.isEmpty()) etAmount.setError("Amount is required");
-            return; // Exit the method if validation fails
-        }
-
-        // Create a Transaction object
-        Transaction transaction = new Transaction(date, amount, category, account, notes);
-
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-
-            // Save the transaction in Firestore
-            db.collection("users").document(userId)
-                    .collection("transactions")
-                    .add(transaction)
-                    .addOnSuccessListener(documentReference -> {
-                        Toast.makeText(getContext(), "Transaction saved!", Toast.LENGTH_SHORT).show();
-
-                        // Notify the listener (DailyFragment) and pass the transaction
-                        if (listener != null) {
-                            listener.onTransactionAdded(transaction);
-                        }
-
-                        // Close the dialog
-                        dismiss();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), "Error saving transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        }
-    }
-
 
     @Override
     public void onAttach(@NonNull Context context) {

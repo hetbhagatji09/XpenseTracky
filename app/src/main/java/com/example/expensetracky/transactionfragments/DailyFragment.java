@@ -85,14 +85,35 @@ public class DailyFragment extends Fragment implements AddTransactionFragment.On
                                 transactionsList.clear(); // Clear the list before adding new items
                                 for (DocumentSnapshot document : task.getResult()) {
                                     String account = document.getString("account");
-                                    String amount = document.getString("amount");  // Updated from getString to getDouble
+                                    Double amount = null;
+
+                                    // Try to get the amount as a number, fallback to parsing if it's a string
+                                    Object amountObj = document.get("amount");
+
+                                    // Check if amount is a Number or String, and handle accordingly
+                                    if (amountObj instanceof Number) {
+                                        amount = ((Number) amountObj).doubleValue();
+                                    } else if (amountObj instanceof String) {
+                                        try {
+                                            amount = Double.parseDouble((String) amountObj);
+                                        } catch (NumberFormatException e) {
+                                            // Handle parsing error, set amount to null
+                                            amount = null;
+                                        }
+                                    }
+
                                     String category = document.getString("category");
                                     String date = document.getString("date");
                                     String notes = document.getString("notes");
 
-                                    // Create a Transaction object and add it to the list
-                                    Transaction transaction = new Transaction(account, amount, category, date, notes);
-                                    transactionsList.add(transaction);
+                                    // Create and add Transaction object only if amount is valid
+                                    if (amount != null) {
+                                        Transaction transaction = new Transaction(account, amount, category, date, notes);
+                                        transactionsList.add(transaction);
+                                    } else {
+                                        // Handle invalid or missing amount field if necessary
+                                        Toast.makeText(getContext(), "Invalid amount in transaction.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                                 adapter.notifyDataSetChanged(); // Notify adapter about data change
                             } else {
@@ -101,9 +122,10 @@ public class DailyFragment extends Fragment implements AddTransactionFragment.On
                             }
                         } else {
                             // Handle failure to fetch transactions
-                            Toast.makeText(getContext(), "Failed to load transactions", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Failed to load transactions.", Toast.LENGTH_SHORT).show();
                         }
                     });
+
         }
     }
 
