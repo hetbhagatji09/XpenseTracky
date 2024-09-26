@@ -42,7 +42,8 @@ dependencies {
     implementation libs.constraintlayout
     implementation 'com.google.android.material:material:1.12.0' // Or the latest version
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth:23.0.0'
     // Firebase Authentication
     implementation libs.firebase.auth
@@ -54,6 +55,7 @@ dependencies {
     // LiveData and ViewModel for Lifecycle-aware components
     implementation libs.lifecycle.livedata.ktx
     implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.firebase.firestore
 
     // Testing Libraries
     testImplementation libs.junit

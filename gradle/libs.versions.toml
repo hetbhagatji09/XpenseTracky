@@ -14,6 +14,7 @@ lifecycleLivedataKtx = "2.8.3"
 lifecycleViewmodelKtx = "2.8.3"
 navigationFragment = "2.8.1"
 navigationUi = "2.8.1"
+firebaseFirestore = "25.1.0"
 
 [libraries]
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
@@ -29,6 +30,7 @@ lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-lived
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
