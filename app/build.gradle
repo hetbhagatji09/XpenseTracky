@@ -46,7 +46,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth:23.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
     implementation 'com.google.android.gms:play-services-basement:18.4.0'
@@ -56,6 +55,7 @@ dependencies {
 
     // Android Navigation Components
     implementation libs.navigation.fragment
+
     implementation libs.navigation.ui
 
     // LiveData and ViewModel for Lifecycle-aware components
@@ -67,6 +67,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 
 // Apply the Google Services plugin for Firebase
