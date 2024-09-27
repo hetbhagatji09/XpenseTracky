@@ -5,7 +5,8 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="red">#FF2400</color>
-
+    <color name="category1">#FF0000</color> <!-- Red -->
+    <color name="category2">#0000FF</color> <!-- Blue -->
 
     <!-- Define your primary dark color -->
     <color name="colorPrimaryDark">#3700B3</color>
