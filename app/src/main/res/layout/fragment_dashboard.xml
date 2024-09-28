@@ -1,17 +1,42 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<!-- fragment_dashboard.xml -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/id_use"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.dashboard.DashboardFragment">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pieChart"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Pie Chart -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="313dp"
+                android:layout_marginVertical="20dp" />
+
+            <!-- RecyclerView for categories -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoryRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- RecyclerView for transactions -->
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Floating Action Button -->
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

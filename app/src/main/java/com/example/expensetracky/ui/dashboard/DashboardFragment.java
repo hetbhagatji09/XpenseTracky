@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracky.DashboardViewModel;
 import com.example.expensetracky.databinding.FragmentDashboardBinding;
@@ -28,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DashboardFragment extends Fragment {
@@ -35,6 +38,8 @@ public class DashboardFragment extends Fragment {
     private FragmentDashboardBinding binding;
     private PieChart pieChart;
     private FirebaseFirestore db;
+    private CategoryAdapter categoryAdapter;
+    private RecyclerView categoryRecyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,7 +55,8 @@ public class DashboardFragment extends Fragment {
 
         // Initialize PieChart
         pieChart = binding.pieChart;
-
+        categoryRecyclerView = binding.categoryRecyclerView;
+        categoryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // Fetch data and set up the PieChart
         loadTransactionData();
 
@@ -89,6 +95,7 @@ public class DashboardFragment extends Fragment {
 
                             // Now that we have the totals for each category, we can update the pie chart
                             updatePieChart(categoryTotals);
+                            updateCategoryList(categoryTotals);
                         } else {
                             Toast.makeText(getActivity(), "Failed to load transactions", Toast.LENGTH_SHORT).show();
                         }
@@ -96,6 +103,8 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    // Update the PieChart with the fetched data
+    // Update the PieChart with the fetched data
     // Update the PieChart with the fetched data
     private void updatePieChart(Map<String, Float> categoryTotals) {
         ArrayList<PieEntry> entries = new ArrayList<>();
@@ -107,42 +116,62 @@ public class DashboardFragment extends Fragment {
 
         // Create PieDataSet and configure the PieChart
         PieDataSet dataSet = new PieDataSet(entries, "Categories");
-        dataSet.setColors(new int[]{Color.rgb(255,127,0), Color.rgb(254,57,57), Color.rgb(236,164,164)}); // Sample colors
+        dataSet.setColors(new int[]{Color.rgb(255, 127, 0), Color.rgb(254, 57, 57), Color.rgb(236, 164, 164)}); // Sample colors
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(16f);
         dataSet.setSliceSpace(4f);
 
+        // Position the labels outside the slices
         dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
-        // Configure lines (arrows) to connect labels to slices
-        dataSet.setValueLinePart1OffsetPercentage(80.f); // Set the length of the first part of the line
-        dataSet.setValueLinePart1Length(0.4f); // Length of the first segment of the line
-        dataSet.setValueLinePart2Length(0.6f); // Length of the second segment of the line
-        dataSet.setValueLineWidth(2f); // Thickness of the line
-        dataSet.setValueLineColor(Color.RED); // Line color
+        // Restore the lines (arrows) to connect labels to the slices
+        dataSet.setValueLinePart1OffsetPercentage(60.f);  // Extend the offset of the first part of the line
+        dataSet.setValueLinePart1Length(1f);  // First segment length
+        dataSet.setValueLinePart2Length(1f);  // Second segment length
+        dataSet.setValueLineWidth(2f);  // Thickness of the line
+        dataSet.setValueLineColor(Color.RED);  // Line color
 
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
         pieChart.setUsePercentValues(true);
         pieChart.setDrawHoleEnabled(true);
+
+        // Set the hole size to make the pie chart circle slightly bigger
+        pieChart.setHoleRadius(15f);  // Increase the hole radius for a bigger chart circle
+        pieChart.setTransparentCircleRadius(22f);  // Adjust the transparent circle slightly larger than the hole
+
+        // Optional: Add padding (extra offsets) around the chart
+        pieChart.setExtraOffsets(25, 25, 25, 25);  // Padding around the pie chart
+
         pieChart.setHoleColor(Color.TRANSPARENT);
+        pieChart.getDescription().setEnabled(false);  // Disable chart description
+        pieChart.getDescription().setText("");
         pieChart.setTransparentCircleColor(Color.LTGRAY);
         pieChart.setTransparentCircleAlpha(110);
-        pieChart.setHoleRadius(40f);
-        pieChart.setTransparentCircleRadius(45f);
-        pieChart.setDrawEntryLabels(true);
+
+        pieChart.setDrawEntryLabels(true);  // Draw labels outside slices
         pieChart.setEntryLabelColor(Color.parseColor("#B21807"));
         pieChart.setEntryLabelTextSize(14f);
-        pieChart.getDescription().setEnabled(false);
         pieChart.setDragDecelerationFrictionCoef(0.95f);
-        pieChart.animateY(1400); // Animation duration
-        pieChart.invalidate(); // Refresh the chart
 
-        // Set up click listener
+        pieChart.animateY(1400);  // Animation duration
+        pieChart.invalidate();    // Refresh the chart
+
+        // Optionally: Disable the legend if not needed
+        pieChart.getLegend().setEnabled(false);
+
+        // Set up click listener for pie slices
         setupClickListener();
     }
 
+
+
+    private void updateCategoryList(Map<String, Float> categoryTotals) {
+        List<Map.Entry<String, Float>> categoryList = new ArrayList<>(categoryTotals.entrySet());
+        categoryAdapter = new CategoryAdapter(categoryList);
+        categoryRecyclerView.setAdapter(categoryAdapter);
+    }
     private void setupClickListener() {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
