@@ -1,4 +1,4 @@
-package com.example.expensetracky;
+package com.example.expensetracky.ui.dashboard;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.expensetracky.DashboardViewModel;
 import com.example.expensetracky.databinding.FragmentDashboardBinding;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;

@@ -1,4 +1,4 @@
-package com.example.expensetracky.ui.dashboard;
+package com.example.expensetracky;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
