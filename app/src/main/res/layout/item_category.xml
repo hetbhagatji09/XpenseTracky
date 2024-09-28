@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="4dp"
+    card_view:cardBackgroundColor="#2C2C2C"
+    card_view:contentPadding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- Category Name Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Category Icon -->
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_category_icon"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:src="@drawable/ic_category_icon"-->
+<!--                android:layout_marginEnd="12dp" />-->
+
+            <!-- Category Name -->
+            <TextView
+                android:id="@+id/tv_category_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF" />
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <!-- Total Amount for Category -->
+            <TextView
+                android:id="@+id/tv_category_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$ 50.00"
+                android:textSize="16sp"
+                android:textColor="#E94C3D"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Category Description (Optional) -->
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
