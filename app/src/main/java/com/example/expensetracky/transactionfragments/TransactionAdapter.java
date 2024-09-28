@@ -13,26 +13,23 @@ import com.example.expensetracky.R;
 import java.util.List;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
+    private List<Transaction> transactions;
 
-    private List<Transaction> transactionList;
-
-    public TransactionAdapter(List<Transaction> transactionList) {
-        this.transactionList = transactionList;
+    public TransactionAdapter(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     @NonNull
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the modified item_transaction.xml layout file
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_transaction, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_transaction, parent, false);
         return new TransactionViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        Transaction transaction = transactionList.get(position);
-
-        // Set the date and day information
+        Transaction transaction = transactions.get(position);
         holder.dayNumber.setText(transaction.getDayNumber());
         holder.dayOfWeek.setText(transaction.getDayOfWeek());
         holder.fullDate.setText(transaction.getFullDate());
@@ -42,26 +39,18 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         // Bind the notes to the TextView
         holder.notes.setText(transaction.getNotes());
-
-        // Safely handle null for the amount
-        if (transaction.getAmount() != null) {
-            holder.expenseAmount.setText(  Double.toString(transaction.getAmount()));
-        } else {
-            holder.expenseAmount.setText("$ 0.00");
-        }
     }
 
     @Override
     public int getItemCount() {
-        return transactionList.size();
+        return transactions.size();
     }
 
-    // Define the ViewHolder to hold references to all the necessary views
-    public static class TransactionViewHolder extends RecyclerView.ViewHolder {
+    static class TransactionViewHolder extends RecyclerView.ViewHolder {
         TextView dayNumber, dayOfWeek, fullDate;
         TextView expenseAmount;
         TextView categoryName, accountName;
-        TextView notes;  // Reference to notes TextView
+        TextView notes;
 
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);

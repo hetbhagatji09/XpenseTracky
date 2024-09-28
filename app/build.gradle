@@ -47,8 +47,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:23.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+
     implementation 'com.google.android.gms:play-services-auth:21.2.0'
     implementation 'com.google.android.gms:play-services-basement:18.4.0'
+    // ViewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6'
+    // LiveData
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.6'
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.6'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
 
     // Firebase Authentication
     implementation libs.firebase.auth

@@ -1,4 +1,4 @@
-package com.example.expensetracky.ui.dashboard;
+package com.example.expensetracky;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,13 +19,21 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DashboardFragment extends Fragment {
-
+    private FirebaseUser currentUser;
     private FragmentDashboardBinding binding;
     private PieChart pieChart;
+    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,23 +44,69 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize PieChart
-        pieChart = binding.pieChart; // Assuming pieChart is defined in your FragmentDashboardBinding
+        // Initialize Firebase Firestore
+        db = FirebaseFirestore.getInstance();
 
-        // Set up the PieChart
-        setupPieChart();
+        // Initialize PieChart
+        pieChart = binding.pieChart;
+
+        // Fetch data and set up the PieChart
+        loadTransactionData();
 
         return root;
     }
 
-    private void setupPieChart() {
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry(30f, "Category 1"));
-        entries.add(new PieEntry(50f, "Category 2"));
-        entries.add(new PieEntry(20f, "Category 3"));
+    // Fetch transactions from Firestore, summing the amounts by category
+    private void loadTransactionData() {
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser!=null) {
+            String userId = currentUser.getUid();
 
+            db.collection("users").document(userId).collection("transactions")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+
+                            // Map to store the total amounts for each category
+                            Map<String, Float> categoryTotals = new HashMap<>();
+
+                            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                                String category = document.getString("category");
+                                Double amount = document.getDouble("amount");
+
+                                // Ensure non-null category and amount
+                                if (category != null && amount != null) {
+                                    // Add the amount to the respective category
+                                    if (categoryTotals.containsKey(category)) {
+                                        categoryTotals.put(category, categoryTotals.get(category) + amount.floatValue());
+                                    } else {
+                                        categoryTotals.put(category, amount.floatValue());
+                                    }
+                                }
+                            }
+
+                            // Now that we have the totals for each category, we can update the pie chart
+                            updatePieChart(categoryTotals);
+                        } else {
+                            Toast.makeText(getActivity(), "Failed to load transactions", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    // Update the PieChart with the fetched data
+    private void updatePieChart(Map<String, Float> categoryTotals) {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        // Convert the categoryTotals map to PieEntry objects
+        for (Map.Entry<String, Float> entry : categoryTotals.entrySet()) {
+            entries.add(new PieEntry(entry.getValue(), entry.getKey()));
+        }
+
+        // Create PieDataSet and configure the PieChart
         PieDataSet dataSet = new PieDataSet(entries, "Categories");
-        dataSet.setColors(new int[]{Color.rgb(255,127,0), Color.rgb(254,57,57), Color.rgb(236,164,164)}); // Remove getContext()
+        dataSet.setColors(new int[]{Color.rgb(255,127,0), Color.rgb(254,57,57), Color.rgb(236,164,164)}); // Sample colors
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(16f);
 
@@ -77,24 +131,16 @@ public class DashboardFragment extends Fragment {
         setupClickListener();
     }
 
-
     private void setupClickListener() {
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-            public void onValueSelected(PieEntry e, com.github.mikephil.charting.highlight.Highlight h) {
-                // Handle the click on a pie slice
-                String message = "Selected: " + e.getLabel() + " - " + e.getValue();
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-            }
-
-            /**
-             * @param e The selected Entry
-             * @param h The corresponding highlight object that contains information
-             *          about the highlighted position such as dataSetIndex, ...
-             */
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-
+                // Handle the click on a pie slice
+                if (e instanceof PieEntry) {
+                    PieEntry pieEntry = (PieEntry) e;
+                    String message = "Selected: " + pieEntry.getLabel() + " - " + pieEntry.getValue();
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
