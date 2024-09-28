@@ -33,7 +33,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         holder.dayNumber.setText(transaction.getDayNumber());
         holder.dayOfWeek.setText(transaction.getDayOfWeek());
         holder.fullDate.setText(transaction.getFullDate());
-
+        holder.expenseAmount.setText("₹"+transaction.getAmount().toString());
         holder.accountName.setText(transaction.getAccount());
         holder.categoryName.setText(transaction.getCategory());
 
