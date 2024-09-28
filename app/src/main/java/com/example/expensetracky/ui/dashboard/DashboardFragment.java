@@ -110,6 +110,17 @@ public class DashboardFragment extends Fragment {
         dataSet.setColors(new int[]{Color.rgb(255,127,0), Color.rgb(254,57,57), Color.rgb(236,164,164)}); // Sample colors
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setValueTextSize(16f);
+        dataSet.setSliceSpace(4f);
+
+        dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
+        // Configure lines (arrows) to connect labels to slices
+        dataSet.setValueLinePart1OffsetPercentage(80.f); // Set the length of the first part of the line
+        dataSet.setValueLinePart1Length(0.4f); // Length of the first segment of the line
+        dataSet.setValueLinePart2Length(0.6f); // Length of the second segment of the line
+        dataSet.setValueLineWidth(2f); // Thickness of the line
+        dataSet.setValueLineColor(Color.RED); // Line color
 
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
@@ -121,7 +132,7 @@ public class DashboardFragment extends Fragment {
         pieChart.setHoleRadius(40f);
         pieChart.setTransparentCircleRadius(45f);
         pieChart.setDrawEntryLabels(true);
-        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setEntryLabelColor(Color.parseColor("#B21807"));
         pieChart.setEntryLabelTextSize(14f);
         pieChart.getDescription().setEnabled(false);
         pieChart.setDragDecelerationFrictionCoef(0.95f);
