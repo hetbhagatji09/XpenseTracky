@@ -2,49 +2,43 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Title input field -->
+    <!-- Title -->
     <EditText
         android:id="@+id/title"
         android:layout_width="match_parent"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:hint="Enter note title"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textSize="16sp"/>
+        android:hint="Title"
+        android:textSize="18sp"/>
 
-    <!-- Space between fields -->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
-
-    <!-- Content input field -->
+    <!-- Note -->
     <EditText
         android:id="@+id/note"
+        android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter note content"
-        android:inputType="textMultiLine"
-        android:minLines="5"
-        android:padding="10dp"
-        android:textSize="16sp" />
+        android:hint="Note"
+        android:textSize="16sp"/>
 
-    <!-- Space between fields -->
-    <Space
+    <!-- Date Picker -->
+    <EditText
+        android:id="@+id/date"
         android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:layout_height="wrap_content"
+        android:hint="Select Date"
+        android:focusable="false"
+        android:clickable="true"/>
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/buttonSaveNote"
         android:layout_width="wrap_content"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
+        android:backgroundTint="@color/red"
+        android:text="Save Note"/>
+
 </LinearLayout>
