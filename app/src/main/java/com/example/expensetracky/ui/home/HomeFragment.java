@@ -40,14 +40,9 @@ public class HomeFragment extends Fragment {
                     tab.setText("Daily");
                     break;
                 case 1:
-                    tab.setText("Calendar");
-                    break;
-                case 2:
-                    tab.setText("Monthly");
-                    break;
-                case 3:
                     tab.setText("Notes");
                     break;
+
             }
         }).attach();
 
