@@ -20,7 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NotesFragment extends Fragment implements AddNotesTransactionFragment.OnNotesAddedListener {
     private FirebaseFirestore db;
@@ -58,8 +60,8 @@ public class NotesFragment extends Fragment implements AddNotesTransactionFragme
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        // Load user's transactions
-        loadTransactions();
+        // Load user's notes
+        loadNotes();
 
         // Floating Action Button click listener
         fabAdd.setOnClickListener(v -> {
@@ -71,13 +73,13 @@ public class NotesFragment extends Fragment implements AddNotesTransactionFragme
         return view;
     }
 
-    private void loadTransactions() {
+    private void loadNotes() {
         if (currentUser != null) {
             String userId = currentUser.getUid();
 
             // Fetch notes from Firestore
             db.collection("users").document(userId)
-                    .collection("notes")
+                    .collection("notes") // Corrected to "notes"
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -85,9 +87,10 @@ public class NotesFragment extends Fragment implements AddNotesTransactionFragme
                             for (DocumentSnapshot document : task.getResult()) {
                                 String title = document.getString("title");
                                 String noteContent = document.getString("note");
+                                String date = document.getString("date");
 
-                                if (title != null && noteContent != null) {
-                                    Notes note = new Notes(title, noteContent);
+                                if (title != null && noteContent != null && date != null) {
+                                    Notes note = new Notes(title, noteContent, date);
                                     notesList.add(note);
                                 }
                             }
@@ -99,43 +102,42 @@ public class NotesFragment extends Fragment implements AddNotesTransactionFragme
         }
     }
 
-
-
-
-
-
     private void addNoteToFirestore(Notes note) {
         if (currentUser != null) {
             String userId = currentUser.getUid();
 
-            // Add transaction to Firestore
+            // Prepare the note data as a map
+            Map<String, Object> noteData = new HashMap<>();
+            noteData.put("title", note.getTitle());
+            noteData.put("note", note.getNote());
+            noteData.put("date", note.getDate()); // Add the date field
+
+            // Add note to Firestore
             db.collection("users").document(userId)
-                    .collection("transactions")
-                    .add(note)
+                    .collection("notes") // Corrected to "notes"
+                    .add(noteData)
                     .addOnSuccessListener(documentReference -> {
-                        // Transaction added successfully
-                        Toast.makeText(getContext(), "Transaction added!", Toast.LENGTH_SHORT).show();
+                        // Note added successfully
+                        Toast.makeText(getContext(), "Note added!", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
-                        // Handle failure to add transaction
-                        Toast.makeText(getContext(), "Failed to add transaction: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Handle failure to add note
+                        Toast.makeText(getContext(), "Failed to add note: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
     }
 
-    /**
-     * @param note
-     */
     @Override
     public void onNoteAdded(Notes note) {
         notesList.add(note);
-        // Call method to add transaction to Firestore
 
         // Notify the adapter about the change
         adapter.notifyItemInserted(notesList.size() - 1);
 
         // Scroll to the bottom of the list
         recyclerView.scrollToPosition(notesList.size() - 1);
+
+        // Add the new note to Firestore
         addNoteToFirestore(note);
     }
 }

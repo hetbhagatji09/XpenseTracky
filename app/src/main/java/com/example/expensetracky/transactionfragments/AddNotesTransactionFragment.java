@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,13 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AddNotesTransactionFragment extends DialogFragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    private EditText title,note;
+    private EditText title, note, date;
     private Button btnSaveNote;
     private OnNotesAddedListener listener;
 
@@ -36,38 +34,48 @@ public class AddNotesTransactionFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_notes, container, false);
 
-        btnSaveNote=view.findViewById(R.id.buttonSaveNote);
-        // Set a click listener on the date EditText to open the date picker
-        title = view.findViewById(R.id.title); // Initialize with the correct ID from your layout
+        title = view.findViewById(R.id.title);
         note = view.findViewById(R.id.note);
+        date = view.findViewById(R.id.date);
+        btnSaveNote = view.findViewById(R.id.buttonSaveNote);
+
+        // Date picker logic
+        date.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view1, year1, month1, dayOfMonth) -> {
+                String selectedDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
+                date.setText(selectedDate);
+            }, year, month, day);
+            datePickerDialog.show();
+        });
 
         btnSaveNote.setOnClickListener(v -> {
-            currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            String ettitle = title.getText().toString().trim();
+            String noted = note.getText().toString().trim();
+            String etdate = date.getText().toString().trim();
 
-           String ettitle=title.getText().toString().trim();
-           String noted=note.getText().toString().trim();
-
-
-            // Create the Notes object
-            Notes notes = new Notes(ettitle,noted);
+            Notes notes = new Notes(ettitle, noted, etdate);
 
             // Check if user is authenticated
             if (currentUser != null) {
-                String userId = currentUser.getUid(); // Get the authenticated user's UID
+                String userId = currentUser.getUid();
 
                 // Now use this userId to access the Firestore collection
                 db.collection("users").document(userId)
                         .collection("notes")
-                        .add(notes) // Firestore auto-generates a document ID
+                        .add(notes)
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(getContext(), "Note added successfully", Toast.LENGTH_SHORT).show();
 
-                            // Prepare the result bundle with the note
+                            // Pass the note data back
                             Bundle result = new Bundle();
                             result.putParcelable("note", notes);
                             getParentFragmentManager().setFragmentResult("noteKey", result);
 
-                            // Close the dialog
                             dismiss();
                         })
                         .addOnFailureListener(e -> {
@@ -79,7 +87,6 @@ public class AddNotesTransactionFragment extends DialogFragment {
         return view;
     }
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -90,7 +97,6 @@ public class AddNotesTransactionFragment extends DialogFragment {
         }
     }
 
-    // Interface to pass transaction data to DailyFragment
     public interface OnNotesAddedListener {
         void onNoteAdded(Notes note);
     }

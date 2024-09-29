@@ -114,7 +114,7 @@ public class DailyFragment extends Fragment implements AddTransactionFragment.On
                                         transactionsList.add(transaction);
                                     } else {
                                         // Handle invalid or missing amount field if necessary
-                                        Toast.makeText(getContext(), "Invalid amount in transaction.", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(getContext(), "Invalid amount in transaction.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                                 adapter.notifyDataSetChanged(); // Notify adapter about data change

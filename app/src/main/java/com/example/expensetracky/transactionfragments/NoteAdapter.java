@@ -32,7 +32,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         Notes singlenote = notesList.get(position);
         holder.title.setText(singlenote.getTitle());
         holder.notes.setText(singlenote.getNote());
-
+        holder.date.setText(singlenote.getDate());  // Display the date
     }
 
     @Override
@@ -41,15 +41,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     static class NoteViewHolder extends RecyclerView.ViewHolder {
-
-
-        TextView notes,title;
+        TextView notes, title, date;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Bind the TextViews from the XML to Java
-            title=itemView.findViewById(R.id.noteTitle);
-            notes=itemView.findViewById(R.id.noteDescription);// Reference to notes TextView
+            title = itemView.findViewById(R.id.tv_note_title);
+            notes = itemView.findViewById(R.id.tv_note_content);  // Correct ID
+            date = itemView.findViewById(R.id.tv_note_date); // Reference to the date TextView
         }
     }
 }
