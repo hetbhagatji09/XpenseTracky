@@ -8,18 +8,6 @@
     tools:context=".EmailSignupActivity">
 
     <!-- App Logo -->
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#80000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
     <ImageView
         android:id="@+id/appLogo"
         android:layout_width="120dp"
@@ -79,16 +67,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="32dp" />
 
-
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/registerProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
     <!-- Continue Button -->
-
     <Button
         android:id="@+id/continueButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         android:padding="14dp"
         android:text="Continue"
@@ -96,16 +93,6 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
-
-    <ProgressBar
-        android:id="@+id/registerProgressBar"
-        style="?android:attr/progressBarStyle"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="181dp"
-        tools:layout_editor_absoluteY="420dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@id/registerProgressBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

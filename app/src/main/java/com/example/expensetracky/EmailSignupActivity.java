@@ -80,5 +80,6 @@ public class EmailSignupActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 }
