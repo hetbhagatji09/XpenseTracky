@@ -7,7 +7,6 @@
     android:background="#000000"
     tools:context=".SignUpActivity">
 
-
     <ImageView
         android:id="@+id/appLogo"
         android:layout_width="120dp"
@@ -19,82 +18,62 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-
-
-<TextView
-android:id="@+id/headingText"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Create Your Account"
-android:textSize="24sp"
-android:textColor="@android:color/white"
-    android:textStyle="bold"
-    android:layout_marginTop="16dp"
-    app:layout_constraintTop_toBottomOf="@id/appLogo"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Continue with Phone -->
-<Button
-android:id="@+id/continueWithPhone"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:text="Continue with Phone"
-android:textColor="@android:color/black"
-    android:backgroundTint="@android:color/white"
-    android:textSize="18sp"
-    android:fontFamily="sans-serif-medium"
-    android:layout_marginTop="24dp"
-    android:padding="14dp"
-    app:layout_constraintTop_toBottomOf="@id/headingText"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginHorizontal="32dp"/>
+    <TextView
+        android:id="@+id/headingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Your Account"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/appLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Continue with Email -->
-<Button
-android:id="@+id/continueWithEmail"
-android:layout_width="0dp"
-android:layout_height="wrap_content"
-android:text="Continue with Email"
-android:textColor="@android:color/black"
-    android:backgroundTint="@android:color/white"
-    android:textSize="18sp"
-    android:fontFamily="sans-serif-medium"
-    android:layout_marginTop="16dp"
-    android:padding="14dp"
-    app:layout_constraintTop_toBottomOf="@id/continueWithPhone"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginHorizontal="32dp"/>
+    <Button
+        android:id="@+id/continueWithEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Continue with Email"
+        android:textColor="@android:color/black"
+        android:backgroundTint="@android:color/white"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="24dp"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@id/headingText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="32dp"/>
 
     <!-- Existing User Text -->
-<TextView
-android:id="@+id/existingUserText"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Already have an account? Log in"
-android:textColor="@android:color/white"
-    android:textSize="16sp"
-    android:layout_marginTop="24dp"
-    app:layout_constraintTop_toBottomOf="@id/continueWithEmail"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/existingUserText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Already have an account? Log in"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/continueWithEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:textColor="@android:color/black"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="8dp"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@id/existingUserText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-<Button
-android:id="@+id/loginButton"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Log In"
-android:textColor="@android:color/black"
-    android:backgroundTint="@color/common_google_signin_btn_text_dark"
-    android:textSize="18sp"
-    android:fontFamily="sans-serif-medium"
-    android:layout_marginTop="8dp"
-    android:padding="14dp"
-    app:layout_constraintTop_toBottomOf="@id/existingUserText"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

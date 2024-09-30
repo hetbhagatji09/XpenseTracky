@@ -17,19 +17,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initialize the buttons
-        continueWithPhoneButton = findViewById(R.id.continueWithPhone);
+
         continueWithEmailButton = findViewById(R.id.continueWithEmail);
         login=findViewById(R.id.loginButton);
 
         // Set click listener for continue with phone number
-        continueWithPhoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to PhoneSignupActivity
-                Intent phoneIntent = new Intent(MainActivity.this, PhoneSignupActivity.class);
-                startActivity(phoneIntent);
-            }
-        });
+
 
         // Set click listener for continue with email
         continueWithEmailButton.setOnClickListener(new View.OnClickListener() {
