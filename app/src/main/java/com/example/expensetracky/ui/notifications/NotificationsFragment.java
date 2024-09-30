@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensetracky.databinding.FragmentNotificationsBinding;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -119,16 +120,11 @@ public class NotificationsFragment extends Fragment {
         ArrayList<BarEntry> entries = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<>(); // To store the category names
 
-        // Manually set the labels
-        labels.add("Mobile");
-        labels.add("Credit");
-        labels.add("Bank");
-        labels.add("Cash");
-
         int index = 0;
-        // Convert the categoryTotals map to BarEntry objects and store values
+        // Convert the categoryTotals map to BarEntry objects and store labels
         for (Map.Entry<String, Float> entry : categoryTotals.entrySet()) {
             entries.add(new BarEntry(index, entry.getValue()));  // BarEntry uses index and value
+            labels.add(entry.getKey());  // Store category name for X-axis label
             index++;
         }
 
@@ -146,14 +142,13 @@ public class NotificationsFragment extends Fragment {
 
         // X-axis configuration to show category names
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels)); // Set predefined category names as X-axis labels
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels)); // Set category names as X-axis labels
         xAxis.setGranularity(1f); // Ensure labels are evenly spaced
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Position labels at the bottom
         xAxis.setDrawGridLines(false); // Remove grid lines for a cleaner look
-        xAxis.setLabelRotationAngle(0f); // Set rotation angle to 0 for straight labels
+        xAxis.setLabelRotationAngle(0f); // Keep labels straight
         xAxis.setTextColor(Color.WHITE); // X-axis labels text color
         xAxis.setTextSize(12f); // X-axis labels text size
-//        xAxis.setSpaceBetweenLabels(2); // Optional: Adjust space between labels to prevent overlap
 
         // Y-axis configuration (optional)
         YAxis leftAxis = barChart.getAxisLeft();
@@ -167,13 +162,12 @@ public class NotificationsFragment extends Fragment {
         // Optional: Disable legend if not needed
         barChart.getLegend().setEnabled(false);
 
-        // Optional: Add animation
-        barChart.animateY(1400);
+        // Add animation for the bars to rise
+        barChart.animateY(2000, Easing.EaseInOutQuad); // Animate the Y values with a duration of 1400ms
 
         // Refresh the chart
         barChart.invalidate();
     }
-
 
 
 
